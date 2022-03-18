@@ -104,7 +104,7 @@ class RemapTask extends DefaultTask {
     private void clear() {
         this.inputJar = null;
         if (inputTask != null) {
-            dependsOn.remove inputTask
+            setDependsOn(dependsOn - inputTask)
             this.inputTask = null
         }
     }

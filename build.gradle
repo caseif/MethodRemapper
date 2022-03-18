@@ -5,15 +5,14 @@ plugins {
     id 'eclipse'
     id 'idea'
 
-    id 'net.minecrell.licenser' version '0.1.2'
-    id 'com.jfrog.bintray' version '1.6'
+    id 'org.cadixdev.licenser' version '0.6.1'
 }
 
-version = '0.2'
+version = '0.3-SNAPSHOT'
 description = 'A Gradle plugin with Java API to remap method names during the build'
 
 ext {
-    github = 'LapisBlue/MethodRemapper'
+    github = 'caseif/MethodRemapper'
     url = "https://github.com/$github"
 
     projectName = 'MethodRemapper'
@@ -27,17 +26,17 @@ subprojects {
     apply plugin: 'eclipse'
     apply plugin: 'idea'
 
-    apply plugin: 'net.minecrell.licenser'
+    apply plugin: 'org.cadixdev.licenser'
 }
 
 allprojects {
-    group = 'blue.lapis.methodremapper'
+    group = 'net.caseif.methodremapper'
 
-    sourceCompatibility = 1.6
-    targetCompatibility = 1.6
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
 
     repositories {
-        jcenter()
+        mavenCentral()
     }
 
     license {
@@ -115,14 +114,15 @@ allprojects {
 
 subprojects {
     dependencies {
-        compile rootProject
+        implementation rootProject
+        implementation 'com.google.guava:guava:17.0'
     }
 }
 
 dependencies {
-    compile 'com.google.guava:guava:17.0'
-    compile 'org.ow2.asm:asm:5.0.3'
-    compile 'org.slf4j:slf4j-api:1.7.12'
+    implementation 'com.google.guava:guava:17.0'
+    implementation 'org.ow2.asm:asm:5.0.3'
+    implementation 'org.slf4j:slf4j-api:1.7.12'
 }
 
 javadoc {
@@ -130,7 +130,7 @@ javadoc {
     options.charSet = 'UTF-8'
     options.links(
             'http://www.slf4j.org/apidocs/',
-            'http://docs.guava-libraries.googlecode.com/git-history/v17.0/javadoc/',
+            'https://guava.dev/releases/17.0/api/docs/',
             'http://asm.ow2.org/asm50/javadoc/user/',
             'http://docs.oracle.com/javase/8/docs/api/'
     )
@@ -141,34 +141,6 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
-bintray {
-    if (project.hasProperty('bintrayUser')) {
-        user = project.bintrayUser
-        key = project.bintrayKey
-    }
-
-    publications = ['mavenJava']
-    pkg {
-        repo = 'maven'
-        name = project.projectName
-        userOrg = 'lapis'
-        desc = project.description
-        licenses = ['MIT']
-
-        websiteUrl = project.url
-        issueTrackerUrl = "$websiteUrl/issues"
-        vcsUrl = "${websiteUrl}.git"
-
-        labels = ['remapper', 'asm']
-
-        publicDownloadNumbers = true
-
-        version {
-            name = project.version
-        }
-    }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.11'
+wrapper {
+    gradleVersion = '7.4.1'
 }

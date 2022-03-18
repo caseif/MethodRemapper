@@ -14,5 +14,5 @@ repositories {
 }
 
 dependencies {
-    compile 'net.minecraft:launchwrapper:1.12'
+    implementation 'net.minecraft:launchwrapper:1.12'
 }

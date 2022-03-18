@@ -31,6 +31,7 @@ import com.google.common.collect.ImmutableTable
 import com.google.common.io.Files
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.bundling.AbstractArchiveTask
@@ -44,9 +45,12 @@ class RemapTask extends DefaultTask {
     @InputFile
     File config
 
+    @InputFile
     private File inputJar
+    @Internal
     AbstractArchiveTask inputTask
 
+    @OutputFile
     File outputJar
 
     @TaskAction
@@ -90,7 +94,6 @@ class RemapTask extends DefaultTask {
         }
     }
 
-    @InputFile
     File getInputJar() {
         if (inputTask != null) {
             return inputTask.archivePath
@@ -117,7 +120,6 @@ class RemapTask extends DefaultTask {
         this.inputTask = parent
     }
 
-    @OutputFile
     File getOutputJar() {
         outputJar ?: getInputJar()
     }

@@ -1,11 +1,12 @@
 plugins {
     id 'java-gradle-plugin'
     id 'groovy'
+    id 'maven-publish'
 
-    id 'com.gradle.plugin-publish' version '0.9.3'
+    id 'com.gradle.plugin-publish' version '0.20.0'
 }
 
-version = '0.2'
+version = '0.3-SNAPSHOT'
 description = 'TODO'
 
 ext {
@@ -14,19 +15,16 @@ ext {
 }
 
 dependencies {
-    compile localGroovy()
+    implementation localGroovy()
 }
 
-pluginBundle {
-    website = project.url
-    vcsUrl = website
-    description = project.description
-    tags = ['asm', 'remapper']
-
+gradlePlugin {
     plugins {
-        remapperPlugin {
-            id = 'blue.lapis.methodremapper'
+        create("remapperPlugin") {
+            id = 'net.caseif.methodremapper'
+            implementationClass = "blue.lapis.methodremapper.gradle.MethodRemapperPlugin"
             displayName = rootProject.projectName
+            description = project.description
         }
     }
 }
